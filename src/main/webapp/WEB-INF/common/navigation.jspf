@@ -1,0 +1,13 @@
+
+
+<nav
+
+
+<ul class="nav navbar-nav navbar-right">
+		<li><a href="/logout.do">Logout</a></li>
+
+	</ul>
+</nav>
+
+
+	<script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
