@@ -1,15 +1,10 @@
 package ua.epam.provider.entity;
 
-import javax.persistence.*;
 
-
-@Entity
-@Table(name = "service")
 public class Service {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
-    @Column(name = "title", nullable = false, unique = true)
+
     private String title;
 
 

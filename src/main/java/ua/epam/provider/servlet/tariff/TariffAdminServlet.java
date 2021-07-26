@@ -15,11 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/tariff-admin.do")
+@WebServlet(urlPatterns = "/admin/tariff-admin.do")
 public class TariffAdminServlet extends HttpServlet {
     private TariffService tariffService = new TariffService();
     private TariffServiceDao tariffServiceDao = new TariffServiceDao();
-
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
@@ -29,7 +28,7 @@ public class TariffAdminServlet extends HttpServlet {
             tariffListMap.put(tariff, tariffServiceDao.findAllServicesForTariff(tariff));
         }
         request.setAttribute("tariffs", tariffListMap);
-        request.getRequestDispatcher("/WEB-INF/views/tariff-admin.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/admin/tariff-admin.jsp").forward(
                 request, response);
     }
 }

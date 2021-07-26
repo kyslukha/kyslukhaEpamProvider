@@ -1,7 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
-<%@ include file="../common/header.jspf"%>
-<%@ include file="../common/navigation.jspf"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
+<%@ include file="../../common/header.jspf"%>
+<%@ include file="../../common/navigation.jspf"%>
+<%@ include file="../../common/footer.jspf"%>
+
 <div class="container">
 
 <H1>Список администраторов</H1>
@@ -22,5 +24,5 @@
 </tbody>
 </table>
 </p>
-<a class="btn btn-info" href="/admin.do">Назад</a>
+<a class="btn btn-info" href="/admin/admin.do">Назад</a>
 </div>

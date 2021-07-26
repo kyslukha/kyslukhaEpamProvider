@@ -1,7 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
-     <%@ include file="../common/header.jspf"%>
-<%@ include file="../common/navigation.jspf"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
+<%@ include file="../../common/header.jspf"%>
+<div class="container">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+crossorigin="anonymous">
+
 </head>
     <title>Список тарифов компании</title>
 
@@ -31,7 +34,7 @@
                                 </ui>
                                 </td>
                     <td><a class="btn btn-primary"
-                    href="/add-user-tariff.do?title=${tariff.key.title}&email=${email}">Подключить</a></td>
+                    href="/user/add-user-tariff.do?title=${tariff.key.title}&email=${email}">Подключить</a></td>
 
 			       </tr>
 			</c:forEach>
@@ -39,4 +42,4 @@
 
 
 	</table>
-	<a class="btn btn-info" href="/user.do">Назад</a>
+	<a class="btn btn-info" href="/user/user.do">Назад</a>

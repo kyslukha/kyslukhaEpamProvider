@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/list-inactive-user.do")
+@WebServlet(urlPatterns = "/admin/list-inactive-user.do")
 public class InactiveUserListServlet extends HttpServlet {
     private UserService userService = new UserService();
     protected void doGet(HttpServletRequest request,
@@ -25,7 +25,7 @@ public class InactiveUserListServlet extends HttpServlet {
             }
         }
         request.setAttribute("users", users);
-        request.getRequestDispatcher("/WEB-INF/views/list-inactive-user.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/admin/list-inactive-user.jsp").forward(
                 request, response);
     }
 }

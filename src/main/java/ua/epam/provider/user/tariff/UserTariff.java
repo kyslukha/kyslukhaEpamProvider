@@ -7,17 +7,15 @@ public class UserTariff implements Comparable<UserTariff>{
     LocalDate dateStart;
     LocalDate dateFinish;
     Integer id;
-
-
-
+    String status;
     public UserTariff() {
     }
-
-    public UserTariff(String title, LocalDate dateStart, LocalDate dateFinish, Integer id) {
+    public UserTariff(String title, LocalDate dateStart, LocalDate dateFinish, Integer id, String status) {
         this.title = title;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         this.id = id;
+        this.status = status;
     }
 
     public String getTitle() {
@@ -51,6 +49,15 @@ public class UserTariff implements Comparable<UserTariff>{
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 
     @Override
     public int compareTo(UserTariff o) {

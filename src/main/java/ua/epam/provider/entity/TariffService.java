@@ -1,21 +1,16 @@
 package ua.epam.provider.entity;
 
-import javax.persistence.*;
 import java.sql.Connection;
 
-@Entity
-@Table(name = "tariff_service")
+
 public class TariffService {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name="tariff_id")
+
     private Integer tariffId;
 
-    @ManyToOne
-    @JoinColumn(name="service_id")
+
     private Integer serviceId;
 
     public TariffService() {

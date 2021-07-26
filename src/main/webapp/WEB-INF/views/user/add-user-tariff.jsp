@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -11,7 +11,7 @@
 <title>Подключить тариф</title>
 <div class="container">
 <H1>Подключение к тарифу ${title}</H1>
-<form method="POST" action="/add-user-tariff.do">
+<form method="POST" action="/user/add-user-tariff.do">
 
                     <fieldset class="form-group">
                     <label for="start">Дата начала</label>

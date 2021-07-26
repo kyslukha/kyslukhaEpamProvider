@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/list-tariff-user.do")
+@WebServlet(urlPatterns = "/user/list-tariff-user.do")
 public class ListTariffUserServlet extends HttpServlet {
     private TariffDao tariffDao = new TariffDao();
 
@@ -46,7 +46,7 @@ public class ListTariffUserServlet extends HttpServlet {
         List<Tariff> tariffList = tariffDao.listTariffs(string);
 
         request.setAttribute("tariffs", tariffList);
-        request.getRequestDispatcher("/WEB-INF/views/list-tariff-user.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/user/list-tariff-user.jsp").forward(
                 request, response);
     }
 }

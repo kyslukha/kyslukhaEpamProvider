@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet(urlPatterns = "/user.do")
+@WebServlet(urlPatterns = "/user/user.do")
 public class UserServlet extends HttpServlet {
 
     private UserService userService = new UserService();
@@ -28,7 +28,7 @@ public class UserServlet extends HttpServlet {
         Double account = user.getAccount();
         request.setAttribute("account",account);
         request.setAttribute("status", status);
-        request.getRequestDispatcher("/WEB-INF/views/user.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/user/user.jsp").forward(
                 request, response);
     }
 }

@@ -1,5 +1,6 @@
 package ua.epam.provider.servlet.admin;
 
+
 import ua.epam.provider.entity.User;
 import ua.epam.provider.service.UserService;
 
@@ -12,12 +13,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/list-admin.do")
+@WebServlet(urlPatterns = "/admin/list-admin.do")
 public class AdminListServlet extends HttpServlet {
     private UserService userService = new UserService();
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-
         List<User> userList = userService.showListUser();
         List<User>adminList = new ArrayList<>();
         for (User user:userList) {
@@ -26,7 +26,7 @@ public class AdminListServlet extends HttpServlet {
            }
         }
         request.setAttribute("admins", adminList);
-        request.getRequestDispatcher("/WEB-INF/views/list-admin.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/admin/list-admin.jsp").forward(
                 request, response);
     }
 }

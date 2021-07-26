@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
-     <%@ include file="../common/header.jspf"%>
-<%@ include file="../common/navigation.jspf"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
+<%@ include file="../../common/footer.jspf"%>
+<%@ include file="../../common/header.jspf"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="container">
-    <title>История тарифов ${email}</title>
+    <title>История тарифов </title>
 
 <table class="table table-striped">
 
@@ -12,6 +12,7 @@
 		        <th>Название</th>
                 <th>Дата начала</th>
                 <th>Дата окончания</th>
+                <th>Статус</th>
 
         </thead>
 		<tbody>
@@ -23,6 +24,7 @@
 
                                         <td>${tariff.dateStart}</td>
                                         <td>${tariff.dateFinish}</td>
+                                        <td>${tariff.status}</td>
 
 
 
@@ -33,6 +35,6 @@
 
 </table>
 
-		<td><a class="btn btn-warning" href="/admin.do">На главную  страницу</a></td>
+		<td><a class="btn btn-warning" href="/user/list-user-tariff.do">Назад</a></td>
 </div>
 

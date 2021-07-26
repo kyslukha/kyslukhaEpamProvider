@@ -1,37 +1,33 @@
 package ua.epam.provider.entity;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "user")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+
     private String name;
 
-    @Column(name = "password", nullable = false)
+
     private String password;
 
-    @Column(name = "email", nullable = false, unique = true)
+
     private String email;
 
-    @Column(name = "phone", nullable = false, unique = true)
+
     private String phone;
 
-    @Column(name = "account", columnDefinition = "0.0")
+
     private Double account;
 
-    @Column(name = "status_active", columnDefinition = "1")
+
     private Integer statusActive;
 
-    @Column(name = "status_user")
+
     private Integer statusUser;
 
 
-
+//    private static final Logger log = Logger.getLogger(String.valueOf(User.class.getClass()));
 
     public User() {
     }

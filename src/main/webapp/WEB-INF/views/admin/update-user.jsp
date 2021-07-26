@@ -1,5 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
+<%@ include file="../../common/header.jspf"%>
+<%@ include file="../../common/navigation.jspf"%>
+<%@ include file="../../common/footer.jspf"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -11,7 +15,7 @@
 <title>Обновление данных пользователя</title>
 <div class="container">
 <H1>Обновление ${email} </H1>
-<form  method="POST" action="/update-user.do">
+<form  method="POST" action="/admin/update-user.do">
 <fieldset class="form-group">
 <label>Имя
 <input name="newName" type="text" class="form-control" value="${oldUser.name}" /> <BR />

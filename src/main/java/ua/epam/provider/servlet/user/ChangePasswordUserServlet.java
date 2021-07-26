@@ -11,20 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/change-password-user.do")
+@WebServlet(urlPatterns = "/user/change-password-user.do")
 public class ChangePasswordUserServlet extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/change-password-user.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/user/change-password-user.jsp").forward(
                 request, response);
     }
 
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         String password =request.getParameter("password");
-
         String email = (String) request.getSession().getAttribute("email");
         User user = new UserDao().getUser( email);
         String newPassword = Encryptor.encrypt(password, email);
@@ -32,11 +31,11 @@ public class ChangePasswordUserServlet extends HttpServlet {
         if (!newPassword.equals(oldPassword)) {
             new UserDao().updateUserPassword( email, newPassword);
             request.getSession().removeAttribute("user");
-            response.sendRedirect("/user.do");
+            response.sendRedirect("/user/user.do");
         }
         else {
             request.setAttribute("errorMessage", "You input old password, password is not changed ");
-            request.getRequestDispatcher("/WEB-INF/views/user.jsp").forward(
+            request.getRequestDispatcher("/WEB-INF/views/user/user.jsp").forward(
                     request, response);
         }
     }

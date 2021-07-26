@@ -1,11 +1,10 @@
 package ua.epam.provider.dao;
 
-import ua.epam.provider.connection.ConnectionPool;
+import ua.epam.provider.connection.DBManager;
 import ua.epam.provider.entity.Tariff;
 import ua.epam.provider.entity.TariffHistory;
 import ua.epam.provider.entity.User;
 import ua.epam.provider.interfaces.TariffHistoryImpl;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,45 +15,39 @@ public class TariffHistoryDao implements TariffHistoryImpl {
     public void createUserTariff(TariffHistory tariffHistory) {
         String sqlString = "INSERT INTO tariff_history (date_start,  date_finish, status, user_id, tariff_id)" +
                 " VALUES (?,?,?,?,?)";
-        PreparedStatement statement;
-        Connection connection = ConnectionPool.getInstance().getConnection();
-
-       // Connection connection = null;
+        PreparedStatement statement = null;
+        Connection connection = null;
+//        Connection connection = DBManager.getInstance().getConnectionWithDriverManager();
         try {
-          // connection = buildConnection();
+            connection = DBManager.getInstance().getConnection();
             statement = connection.prepareStatement(sqlString);
             statement.setDate(1, Date.valueOf(tariffHistory.getDateStart()));
             statement.setDate(2, Date.valueOf(tariffHistory.getDateFinish()));
             statement.setInt(3, tariffHistory.getStatus());
             statement.setInt(4, tariffHistory.getUserId());
             statement.setInt(5, tariffHistory.getTariffId());
-
             int rows = statement.executeUpdate();
-
             if (rows > 0)
                 System.out.println("A new tariff  for user  has been inserted successfully!");
             else
                 System.out.println("Something went wrong with creation!");
+            statement.close();
         } catch (SQLException sqlException) {
+            DBManager.getInstance().rollbackAndClose(connection);
             sqlException.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(connection);
         }
-        try {
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
     public void updateUserTariff(TariffHistory tariffHistory, LocalDate dateFinish) {
         String sqlString = "UPDATE tariff_history  SET date_finish = ? WHERE id = ?";
-        PreparedStatement statement;
-        Connection connection = ConnectionPool.getInstance().getConnection();
-       // Connection connection = null;
+        PreparedStatement statement = null;
+        Connection connection = null;
+//        Connection connection = DBManager.getInstance().getConnectionWithDriverManager();
         try {
-           // connection = buildConnection();
+            connection = DBManager.getInstance().getConnection();
             statement = connection.prepareStatement(sqlString);
             statement.setDate(1, Date.valueOf(dateFinish));
             statement.setInt(2, tariffHistory.getId());
@@ -63,73 +56,39 @@ public class TariffHistoryDao implements TariffHistoryImpl {
                 System.out.println("The tariff for user has been updated!");
             else
                 System.out.println("Something went wrong with updating!");
-
+            statement.close();
         } catch (SQLException sqlException) {
+            DBManager.getInstance().rollbackAndClose(connection);
             sqlException.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(connection);
         }
-        try {
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
     public void inactiveStatusTariff(User user) {
         List<TariffHistory> userTariffList = showListActiveAndFutureUsersTariffs(user);
         String sqlUpdate = "UPDATE tariff_history  SET status = ? WHERE id = ?";
-        String sqlDelete = "DELETE tariff_history  WHERE id = ?";
-        //Connection connection = null;
-        Connection connection = ConnectionPool.getInstance().getConnection();
+//        Connection connection = DBManager.getInstance().getConnectionWithDriverManager();
+        Connection connection = null;
+        PreparedStatement statement = null;
         for (TariffHistory checkUserTariff : userTariffList) {
-            if (checkUserTariff.getDateStart().isAfter(LocalDate.now())) {
-                PreparedStatement statement;
-
-                try {
-                    //connection = buildConnection();
-                    statement = connection.prepareStatement(sqlDelete);
-                    statement.setInt(1, checkUserTariff.getId());
-                    int rows = statement.executeUpdate();
-                    if (rows > 0)
-                        System.out.println("Tariff  has been deleted!");
-                    else
-                        System.out.println("Something went wrong with deleting!");
-
-                } catch (SQLException sqlException) {
-                    sqlException.printStackTrace();
-                }
-                try {
-                    connection.commit();
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else {
-                PreparedStatement statement;
-                try {
-                   //connection = buildConnection();
-                    statement = connection.prepareStatement(sqlUpdate);
-                    statement.setInt(1, 0);
-                    statement.setInt(2, checkUserTariff.getId());
-
-                    int rows = statement.executeUpdate();
-                    if (rows > 0)
-                        System.out.println("Tariff is inactive");
-                    else
-                        System.out.println("Something went wrong with deleting!");
-
-                } catch (SQLException sqlException) {
-                    sqlException.printStackTrace();
-                }
-                try {
-                    connection.commit();
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            try {
+                connection = DBManager.getInstance().getConnection();
+                statement = connection.prepareStatement(sqlUpdate);
+                statement.setInt(1, 0);
+                statement.setInt(2, checkUserTariff.getId());
+                int rows = statement.executeUpdate();
+                if (rows > 0)
+                    System.out.println("Tariff is inactive");
+                else
+                    System.out.println("Something went wrong with deleting!");
+                statement.close();
+            } catch (SQLException sqlException) {
+                DBManager.getInstance().rollbackAndClose(connection);
+                sqlException.printStackTrace();
+            } finally {
+                DBManager.getInstance().commitAndClose(connection);
             }
         }
     }
@@ -139,7 +98,8 @@ public class TariffHistoryDao implements TariffHistoryImpl {
         List<TariffHistory> tariffs = showListAllTariffs();
         boolean check = false;
         for (TariffHistory checkUserTariff : tariffs) {
-            if (checkUserTariff.getTariffId().equals(tariff.getId()) && checkUserTariff.getUserId().equals(user.getId())) {
+            if (checkUserTariff.getTariffId().equals(tariff.getId()) &&
+                    checkUserTariff.getUserId().equals(user.getId())) {
                 check = true;
                 break;
             }
@@ -152,7 +112,8 @@ public class TariffHistoryDao implements TariffHistoryImpl {
         List<TariffHistory> userTariffs = showListAllTariffs();
         TariffHistory thisUserTariff = new TariffHistory();
         for (TariffHistory checkUserTariff : userTariffs) {
-            if (checkUserTariff.getTariffId().equals(tariff.getId()) && checkUserTariff.getUserId().equals(user.getId())) {
+            if (checkUserTariff.getTariffId().equals(tariff.getId()) &&
+                    checkUserTariff.getUserId().equals(user.getId())) {
                 thisUserTariff = checkUserTariff;
             }
         }
@@ -163,12 +124,14 @@ public class TariffHistoryDao implements TariffHistoryImpl {
     public List<TariffHistory> showListAllTariffs() {
         String sqlString = "SELECT * FROM  tariff_history";
         List<TariffHistory> userTariffs = new ArrayList<>();
-        Connection connection = ConnectionPool.getInstance().getConnection();
-        //Connection connection = null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+//        Connection connection = DBManager.getInstance().getConnectionWithDriverManager();
         try {
-            //connection = buildConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sqlString);
+            connection = DBManager.getInstance().getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sqlString);
             while (resultSet.next()) {
                 TariffHistory tariffHistory = new TariffHistory(resultSet.getInt(1),
                         resultSet.getDate(2).toLocalDate(),
@@ -178,14 +141,13 @@ public class TariffHistoryDao implements TariffHistoryImpl {
                         resultSet.getInt(6));
                 userTariffs.add(tariffHistory);
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException sqlException) {
+            DBManager.getInstance().rollbackAndClose(connection);
             System.out.println(sqlException.getMessage());
-        }
-        try {
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(connection);
         }
         return userTariffs;
     }
@@ -211,7 +173,6 @@ public class TariffHistoryDao implements TariffHistoryImpl {
                 thisUserTariffs.add(userTariff);
             }
         }
-
         return thisUserTariffs;
     }
 
@@ -220,12 +181,10 @@ public class TariffHistoryDao implements TariffHistoryImpl {
         List<TariffHistory> userTariffs = showListUsersTariffHistories(user);
         List<TariffHistory> thisUserTariffs = new ArrayList<>();
         for (TariffHistory userTariff : userTariffs) {
-
-            if (userTariff.getDateStart().isAfter(LocalDate.now()) || userTariff.getStatus().equals(1)) {
+            if (userTariff.getDateFinish().isAfter(LocalDate.now()) || userTariff.getStatus().equals(1)) {
                 thisUserTariffs.add(userTariff);
             }
         }
-
         return thisUserTariffs;
     }
 
@@ -233,19 +192,13 @@ public class TariffHistoryDao implements TariffHistoryImpl {
     public void activeStatusTariff(User user) {
         List<TariffHistory> userTariffList = showListUsersTariffHistories(user);
         String sqlUpdate = "UPDATE tariff_history  SET status = ? WHERE id = ?";
-        //Connection connection = null;
-        Connection connection = ConnectionPool.getInstance().getConnection();
         for (TariffHistory checkUserTariff : userTariffList) {
             if (validationUserTariff(checkUserTariff)) {
-                PreparedStatement statement;
-                System.out.println(checkUserTariff.getDateStart());
-                System.out.println(checkUserTariff.getDateFinish());
-
-
-
-
+//                Connection connection = DBManager.getInstance().getConnectionWithDriverManager();
+                Connection connection = null;
+                PreparedStatement statement = null;
                 try {
-                   // connection = buildConnection();
+                    connection = DBManager.getInstance().getConnection();
                     statement = connection.prepareStatement(sqlUpdate);
                     statement.setInt(1, 1);
                     statement.setInt(2, checkUserTariff.getId());
@@ -254,15 +207,12 @@ public class TariffHistoryDao implements TariffHistoryImpl {
                         System.out.println("Tariff  has been active!");
                     else
                         System.out.println("Something went wrong with deleting!");
-
+                    statement.close();
                 } catch (SQLException sqlException) {
+                    DBManager.getInstance().rollbackAndClose(connection);
                     sqlException.printStackTrace();
-                }
-                try {
-                    connection.commit();
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } finally {
+                    DBManager.getInstance().commitAndClose(connection);
                 }
 
             }
@@ -285,13 +235,12 @@ public class TariffHistoryDao implements TariffHistoryImpl {
     @Override
     public void deleteUserTariff(TariffHistory tariffHistory) {
         String sqlString = "DELETE FROM tariff_history  WHERE id= ?";
-        PreparedStatement statement;
-
-        Connection connection = ConnectionPool.getInstance().getConnection();
-        //Connection connection = null;
+        PreparedStatement statement = null;
+        Connection connection = null;
+//        Connection connection = DBManager.getInstance().getConnectionWithDriverManager();
 
         try {
-            //connection = buildConnection();
+            connection = DBManager.getInstance().getConnection();
             statement = connection.prepareStatement(sqlString);
             statement.setInt(1, tariffHistory.getId());
             int rows = statement.executeUpdate();
@@ -299,22 +248,18 @@ public class TariffHistoryDao implements TariffHistoryImpl {
                 System.out.println("User tariff with id " + tariffHistory.getId() + " has been deleted!");
             else
                 System.out.println("Something went wrong with deleting!");
-
+            statement.close();
         } catch (SQLException sqlException) {
+            DBManager.getInstance().rollbackAndClose(connection);
             sqlException.printStackTrace();
-        }
-        try {
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(connection);
         }
 
     }
 
     @Override
     public boolean validationUserTariff(TariffHistory tariffHistory) {
-
         return (!tariffHistory.getDateStart().isAfter(LocalDate.now())) &&
                 (!tariffHistory.getDateFinish().isBefore(LocalDate.now()));
     }
@@ -322,11 +267,11 @@ public class TariffHistoryDao implements TariffHistoryImpl {
     @Override
     public void checkStatusTariff(TariffHistory tariffHistory) {
         String sqlString = "UPDATE tariff_history  SET status = ? WHERE id = ?";
-        PreparedStatement statement;
-        Connection connection = ConnectionPool.getInstance().getConnection();
-        //Connection connection = null;
+        PreparedStatement statement = null;
+        Connection connection = null;
+//        Connection connection = DBManager.getInstance().getConnectionWithDriverManager();
         try {
-           //connection = buildConnection();
+            connection = DBManager.getInstance().getConnection();
             statement = connection.prepareStatement(sqlString);
             statement.setInt(1, tariffHistory.getStatus());
             statement.setInt(2, tariffHistory.getId());
@@ -335,15 +280,12 @@ public class TariffHistoryDao implements TariffHistoryImpl {
                 System.out.println("The status of tariff for user has been updated!");
             else
                 System.out.println("Something went wrong with updating!");
-
+            statement.close();
         } catch (SQLException sqlException) {
+            DBManager.getInstance().rollbackAndClose(connection);
             sqlException.printStackTrace();
-        }
-        try {
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(connection);
         }
     }
 }

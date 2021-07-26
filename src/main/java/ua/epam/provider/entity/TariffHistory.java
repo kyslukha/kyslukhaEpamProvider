@@ -1,30 +1,25 @@
 package ua.epam.provider.entity;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "tariff_history")
+
 public class TariffHistory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
 
-    @Column(name = "date_start", nullable = false)
+
     private LocalDate dateStart;
 
-    @Column(name = "date_finish", columnDefinition = "NULL")
-    private LocalDate dateFinish = null;
 
-    @Column(name = "status")
+    private LocalDate dateFinish;
+
+
     private Integer status;
 
-    @ManyToOne
-    @JoinColumn(name = "tariff_id")
+
     private Integer tariffId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+
     private Integer userId;
 
     public TariffHistory() {

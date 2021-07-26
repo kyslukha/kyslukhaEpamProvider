@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `provider`.`tariff_history` (
   CONSTRAINT `fk_tariff_history_tariff1`
     FOREIGN KEY (`tariff_id`)
     REFERENCES `provider`.`tariff` (`id`)
-    ON DELETE CASCADE
+    ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
@@ -113,12 +113,12 @@ CREATE TABLE IF NOT EXISTS `provider`.`tariff_service` (
     FOREIGN KEY (`tariff_id`)
     REFERENCES `provider`.`tariff` (`id`)
     ON DELETE CASCADE
-    ON UPDATE RESTRICT,
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_tariff_service_service1`
     FOREIGN KEY (`service_id`)
     REFERENCES `provider`.`service` (`id`)
     ON DELETE CASCADE
-    ON UPDATE RESTRICT)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

@@ -10,14 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet(urlPatterns = "/admin.do")
+@WebServlet(urlPatterns = "/admin/admin.do")
 public class AdminServlet extends HttpServlet {
-
-
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/admin.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/admin/admin.jsp").forward(
                 request, response);
     }
 }

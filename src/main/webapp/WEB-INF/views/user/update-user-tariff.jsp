@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -10,8 +10,8 @@
  </head>
 <title>Изменение тарифа </title>
 <div class="container">
-<H1>Установить новую дату окончания тарифа  ${title} ${id}</H1>
-<form method="POST" action="/update-user-tariff.do">
+<H1>Установить новую дату окончания тарифа  ${title}</H1>
+<form method="POST" action="/user/update-user-tariff.do">
  </fieldset>
                   <fieldset class="form-group">
                     <label for="start">Дата окончания</label>

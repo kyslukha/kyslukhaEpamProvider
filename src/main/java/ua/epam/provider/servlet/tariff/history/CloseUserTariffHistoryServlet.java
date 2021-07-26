@@ -13,20 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-@WebServlet(urlPatterns = "/close-user-tariff.do")
+@WebServlet(urlPatterns = "/user/close-user-tariff.do")
 public class CloseUserTariffHistoryServlet extends HttpServlet {
 
     private TariffHistoryService userTariff = new TariffHistoryService();
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-
         String email = String.valueOf(request.getSession().getAttribute("email"));
         User user = new UserDao().getUser(email);
-
-
         Integer id = Integer.valueOf(request.getParameter("id"));
-
         TariffHistory tariffHistory = userTariff.findById(id);
         if (user.getStatusActive().equals(1)) {
             if (user.getStatusActive().equals(1)) {
@@ -41,11 +37,11 @@ public class CloseUserTariffHistoryServlet extends HttpServlet {
                 userTariff.updateUserTariff(tariffHistory, dateFinish);
             }
         }
-        response.sendRedirect("/list-user-tariff.do");
+        response.sendRedirect("/user/list-user-tariff.do");
     }
     else
     {
-        response.sendRedirect("/user.do");
+        response.sendRedirect("/user/user.do");
     }
 }
 }

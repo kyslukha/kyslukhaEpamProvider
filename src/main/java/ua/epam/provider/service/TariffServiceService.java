@@ -7,11 +7,12 @@ import ua.epam.provider.entity.Tariff;
 import java.util.List;
 
 public class TariffServiceService {
-    public List<Service> showListServicesOfTariff( Tariff tariff){
-        List<Service> serviceList = new TariffServiceDao().findAllServicesForTariff( tariff);
+    public List<Service> showListServicesOfTariff(Tariff tariff) {
+        List<Service> serviceList = new TariffServiceDao().findAllServicesForTariff(tariff);
         return serviceList;
     }
-    public void createTariffServices( Tariff tariff, List<Service> serviceList){
-        new TariffServiceDao().createTariffServices( tariff, serviceList);
+
+    public void createTariffServices(Tariff tariff, List<Service> serviceList) {
+        new TariffServiceDao().createTariffServices(tariff, serviceList);
     }
 }

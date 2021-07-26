@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
-     <%@ include file="../common/header.jspf"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
+<%@ include file="../../common/header.jspf"%>
+<%@ include file="../../common/footer.jspf"%>
 
 <!DOCTYPE html>
 <html>
@@ -11,7 +12,7 @@
 
 <div class="container">
 
-	<form method="POST" action="/add-money-user.do">
+	<form method="POST" action="/user/add-money-user.do">
 		<fieldset class="form-group">
 			<label>Введите сумму</label> <input name="sum" type="text"
 				class="form-control" /> <BR />

@@ -41,7 +41,7 @@ public class Check {
         }
     }
 
-    public void checkUser(User user){
+    public void checkInactiveUser(User user){
        if (user.getStatusActive().equals(0)){
            Double sum = 0.0;
            List<TariffHistory> tariffHistories = tariffHistoryDao.showListUsersTariffHistories(user);
@@ -51,9 +51,26 @@ public class Check {
                }
            } if (user.getAccount() >= sum) {
                userDao.addMoney(user.getEmail(), user.getAccount() - sum);
+               user.setAccount(user.getAccount()-sum);
                userDao.changeActiveStatus(user.getEmail(), 1);
                tariffHistoryDao.activeStatusTariff(user);
            }
        }
+    }
+    public void checkActiveUser(User user){
+        Double sum = 0.0;
+        List<TariffHistory> tariffHistories = tariffHistoryDao.showListUsersTariffHistories(user);
+        for (TariffHistory tariff : tariffHistories) {
+            if (tariffHistoryDao.validationUserTariff(tariff)) {
+                sum = sum + tariffDao.findTariffById(tariff.getTariffId()).getPriceByDay();
+            }
+        }if (user.getAccount() >= sum){
+            userDao.addMoney(user.getEmail(), user.getAccount() - sum);
+            user.setAccount(user.getAccount() - sum);
+            tariffHistoryDao.activeStatusTariff(user);
+        }else{
+            userDao.changeActiveStatus(user.getEmail(), 0);
+        }
+
     }
 }

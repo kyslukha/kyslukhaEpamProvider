@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/list-user-tariff.do")
+@WebServlet(urlPatterns = "/user/list-user-tariff.do")
 public class ListUserTariffServlet extends HttpServlet {
     private UserService userService = new UserService();
     private TariffHistoryService userTariff = new TariffHistoryService();
@@ -30,20 +30,20 @@ public class ListUserTariffServlet extends HttpServlet {
         String email = (String) request.getSession().getAttribute("email");
         User user = userDao.getUser( email);
         List<UserTariff> userTariffs = new ArrayList<>();
-
-        List<TariffHistory>   listUserTariffs = null;
-        listUserTariffs = userTariff.showActiveAndFutureUserTariff( user);
-
+        List<TariffHistory>   listUserTariffs = userTariff.showActiveAndFutureUserTariff( user);
         for (TariffHistory tariffHistory : listUserTariffs) {
             Tariff tariff = new TariffDao().findTariffById( tariffHistory.getTariffId());
+            String status = "активный";
+            if (tariffHistory.getStatus().equals(0)){
+                status = "неактивный";
+            }
             userTariffs.add(new UserTariff(tariff.getTitle(), tariffHistory.getDateStart(),
-                    tariffHistory.getDateFinish(),tariffHistory.getId()));
-
+                    tariffHistory.getDateFinish(),tariffHistory.getId(), status));
         }
         Collections.sort(userTariffs);
         request.setAttribute("listTariffs", userTariffs);
         request.setAttribute("user", user);
-        request.getRequestDispatcher("/WEB-INF/views/list-user-tariff.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/user/list-user-tariff.jsp").forward(
                 request, response);
     }
 }

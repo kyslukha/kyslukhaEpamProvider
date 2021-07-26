@@ -5,23 +5,27 @@ import ua.epam.provider.entity.User;
 import java.util.List;
 
 public interface UserImpl {
-    void createUser( User user);
+    void createUser(User user);
 
-    void updateUser( User oldUser,User user);
+    void updateUser(User oldUser, User user);
 
-    void updateUserPassword( String email, String password);
+    void updateUserPassword(String email, String password);
 
-    boolean isExistUser( String email);
+    boolean isExistUser(String email);
+
+    boolean isExistUserPhone(String phone);
 
     List<User> getAllUsers();
 
-    User getUser( String email);
+    User getUser(String email);
 
-    void deleteUser( User user);
+    void deleteUser(User user);
 
-    void changeActiveStatus( String email, Integer status);
+    void changeActiveStatus(String email, Integer status);
 
-    void addMoney( String email, Double sum);
+    void addMoney(String email, Double sum);
 
-    User findUserById( Integer id);
+    User findUserById(Integer id);
+
+    List<User> viewAllByPage(Integer page, Integer recordsOnPage, List<User> list);
 }

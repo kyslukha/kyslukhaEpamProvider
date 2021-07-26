@@ -1,6 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-     pageEncoding="UTF-8"%>
-     <%@ include file="../common/header.jspf"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ include file="../../common/page.jspf"%>
+<%@ include file="../../common/header.jspf"%>
+<%@ include file="../../common/navigation.jspf"%>
+<%@ include file="../../common/footer.jspf"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -11,7 +14,7 @@
 
 <div class="container">
 
-	<form method="POST" action="/change-password-user.do">
+	<form method="POST" action="/user/change-password-user.do">
 		<fieldset class="form-group">
 			<label>Введите новый пароль</label> <input name="password" type="text"
 				class="form-control" /> <BR />

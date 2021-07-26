@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/tariff-user.do")
+@WebServlet(urlPatterns = "/user/tariff-user.do")
 public class TariffUserServlet extends HttpServlet {
     private TariffService tariffService = new TariffService();
     private TariffServiceDao tariffServiceDao = new TariffServiceDao();
@@ -30,7 +30,7 @@ public class TariffUserServlet extends HttpServlet {
         }
 
         request.setAttribute("tariffs", tariffListMap);
-        request.getRequestDispatcher("/WEB-INF/views/tariff-user.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/user/tariff-user.jsp").forward(
                 request, response);
     }
 }

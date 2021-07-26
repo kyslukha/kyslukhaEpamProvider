@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/update-user.do")
+@WebServlet(urlPatterns = "/admin/update-user.do")
 public class UpdateUserServlet extends HttpServlet {
     private User oldUser = new User();
 
@@ -24,9 +24,8 @@ public class UpdateUserServlet extends HttpServlet {
         request.getSession().setAttribute("oldPhone", oldUser.getPhone());
         request.getSession().setAttribute("oldName", oldUser.getName());
         request.getSession().setAttribute("oldUser", oldUser);
-        request.getRequestDispatcher("/WEB-INF/views/update-user.jsp").forward(
+        request.getRequestDispatcher("/WEB-INF/views/admin/update-user.jsp").forward(
                 request, response);
-
     }
 
     protected void doPost(HttpServletRequest request,
@@ -40,20 +39,21 @@ public class UpdateUserServlet extends HttpServlet {
         String newPassword = Encryptor.encrypt(password, email);
         User user = new User(name, email, phone, newPassword);
         oldUser = new UserDao().getUser( oldEmail);
-        if (!new UserDao().isExistUser( email) || email.equals(oldEmail)) {
+        if ((!new UserDao().isExistUser( email) || email.equals(oldEmail))&&
+                (!new UserDao().isExistUserPhone(phone)||phone.equals(oldUser.getPhone()))) {
             new UserDao().updateUser( oldUser, user);
             User newUser = new UserDao().getUser(email);
             if (newUser.getStatusUser() == 1) {
                 request.getSession().setAttribute("email", user.getEmail());
                 request.getSession().setAttribute("name", user.getName());
                 request.getSession().setAttribute("phone", user.getPhone());
-                response.sendRedirect("/admin.do");
+                response.sendRedirect("/admin/admin.do");
             } else {
-                response.sendRedirect("/list-user.do");
+                response.sendRedirect("/admin/list-user.do");
             }
         } else {
             request.setAttribute("errorMessage", "User with that  " + email + " is already exists");
-            request.getRequestDispatcher("/WEB-INF/views/update-user.jsp").forward(
+            request.getRequestDispatcher("/WEB-INF/views/admin/update-user.jsp").forward(
                     request, response);
         }
     }
