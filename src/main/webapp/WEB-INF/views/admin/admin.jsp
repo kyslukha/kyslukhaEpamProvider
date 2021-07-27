@@ -41,6 +41,7 @@ href="/admin/update-user.do?email=${email}&name=${name}&phone=${phone}">Обно
 <td><a class="btn btn-warning" href="/admin/list-user.do">Список пользователей</a></td>
 <td><a class="btn btn-warning" href="/admin/list-inactive-user.do">Список заблокированых пользователей</a></td>
 <td><a class="btn btn-primary" href="/admin/list-admin.do">Список адмиристраторов</a></td>
+<td><a class="btn btn-info" href="/admin/user-list-info.do">Список заказов</a></td>
 </div>
 </body>
 
